@@ -1,5 +1,12 @@
-6
-0 10 150 200 systemep1.jpg
-1 35 500 40 systemep2.jpg
-2 89 74 190 systemep3.jpg
-3 58 753 89 systemep4.jpg
+5
+0 25 30 70 systemep1.jpg
+1 10 150 200 systemep2.jpg
+2 35 500 40 systemep3.jpg
+3 89 74 190 systemep4.jpg
+4 58 753 89 systemep5.jpg
+5
+0 1 0 98
+1 2 3 95
+2 4 3 56
+3 0 4 65
+4 2 4 59

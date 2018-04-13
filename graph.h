@@ -292,7 +292,9 @@ class Graph
         std::shared_ptr<GraphInterface> m_interface = nullptr;
 
         /// Liste des sommets a ne pas sauvegarder
-        std::vector<int> m_so_asupp;
+        std::map<int, std::string> m_so_asupp;
+        ///Liste des sommets avec nom
+        std::map<int, std::string> m_nom_so;
 
 
     public:

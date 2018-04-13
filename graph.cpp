@@ -2,6 +2,8 @@
 #include<fstream>
 #include<iostream>
 #include<string>
+#include <stdlib.h>
+#include<map>
 /***************************************************
                     VERTEX
 ****************************************************/
@@ -191,16 +193,20 @@ void Graph::make_example(Graph g)
     add_interfaced_edge(7, 2, 0, 100.0);
     add_interfaced_edge(8, 5, 2, 20.0);
     add_interfaced_edge(9, 3, 7, 80.0);*/
-    //ajout_arete("systemep", g);
-    //ajout_sommet("systemep", g );
-    std::cout<<" c'est bon!"<<std::endl;
-    test_remove_sommet("systemep", g);
-    //int x;
-    //std::cout<<"quelle arete va etre retiré ?"<<std::endl;
-    //std::cin>>x;
-    //test_remove_edge(x);
-    //test_remove_sommet("systemep");
+    ///ajout_arete("systemep", g);
+    ajout_sommet("systemep", g );
 
+    //system("pause");
+    //test_remove_sommet("systemep", g);
+    system("pause");
+    ///ajout_arete("systemp", g);
+    //system("pause");
+    int x;
+    std::cout<<"quelle arete va etre retiré ?"<<std::endl;
+    std::cin>>x;
+    ///test_remove_edge(x);
+    std::cout<<" c'est bon!"<<std::endl;
+    system("pause");
     Sauvegarde_totale("systemep");
 }
 
@@ -288,6 +294,7 @@ void Graph::Charger_toutes_les_sommets_et_aretes(std::string nom_systeme)
         fichier>>x;
         fichier>>y;
         fichier>>blaze_photo;
+        m_nom_so[indice]=blaze_photo;
         add_interfaced_vertex(indice,poid,x,y,blaze_photo);
     }
     fichier>>taille;
@@ -320,24 +327,31 @@ void Graph::Savegarde_sommets_aretes(std::string nom_systeme)
     std::string fin;
     fichier_taille=m_vertices.size();
     fichier<<m_vertices.size()<<std::endl;
-    for(int i=0; i<fichier_taille; i++)
+    for(auto it= m_vertices.begin(); it!=m_vertices.end(); it++)
     {
 
-        x=m_vertices[i].m_interface->m_top_box.get_posx()+2;
-        y=m_vertices[i].m_interface->m_top_box.get_posy()+2;
-        chiffre=std::to_string(i+1);
-        fin=nom_systeme+chiffre;
-        fin+=".jpg";
-        fichier<<i<<" "<<m_vertices[i].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
+        x=m_vertices[it->first].m_interface->m_top_box.get_posx()+2;
+        y=m_vertices[it->first].m_interface->m_top_box.get_posy()+2;
+        chiffre=std::to_string(it->first+1);
+        fin=m_nom_so[it->first];
+        //fin+=".jpg";
+        std::cout<<"YEEES"<<std::endl;
+        //if(!(m_vertices[it->first].m_value!=0)&&(x!=0)&&(y!=0))
+        //{
+        std::cout<<it->first<<" "<<m_vertices[it->first].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
+        fichier<<it->first<<" "<<m_vertices[it->first].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
+        //}
         //fin=nom_systeme;
     }
     fichier<<m_edges.size()<<std::endl;
     fichier_taille=m_edges.size();
-    for(int j=0; j<fichier_taille; j++)
+    for(auto it = m_edges.begin(); it!=m_edges.end(); it++)
     {
+        std::cout<<it->first<<" "<<m_edges[it->first].m_to<<" "<<m_edges[it->first].m_from<<" "<<m_edges[it->first].m_weight<<std::endl;
 
-        fichier<<j<<" "<<m_edges[j].m_to<<" "<<m_edges[j].m_from<<" "<<m_edges[j].m_weight<<std::endl;
+        fichier<<it->first<<" "<<m_edges[it->first].m_to<<" "<<m_edges[it->first].m_from<<" "<<m_edges[it->first].m_weight<<std::endl;
     }
+    fichier.close();
     std::cout<<" dans save"<<std::endl;
 }
 
@@ -357,21 +371,34 @@ void Graph::Sauvegarde_totale(std::string nom_systeme)
     std::string chiffre;
     std::string fin;
     fichier_taille=m_vertices.size();
-    fichier<<m_vertices.size()<<std::endl;
-    for(int i=0; i<fichier_taille; i++)
+    std::cout<<fichier_taille<<std::endl;
+    if(!m_so_asupp.empty())
+    {
+        fichier_taille=fichier_taille-m_so_asupp.size();
+    }
+    std::cout<<fichier_taille<<std::endl;
+    std::cout<<m_so_asupp.size()<<std::endl;
+    fichier<<fichier_taille<<std::endl;
+
+    for(auto i = m_vertices.begin(); i!=m_vertices.end(); i++)
     {
 
-        for(int w=0; w<m_so_asupp.size();w++)
+        for(auto w=m_so_asupp.begin(); w!=m_so_asupp.end(); w++)
         {
-            if(w!=i)
+            if(w->first!=i->first)
             {
-                x=m_vertices[i].m_interface->m_top_box.get_posx()+2;
-                y=m_vertices[i].m_interface->m_top_box.get_posy()+2;
-                chiffre=std::to_string(i+1);
-                fin=nom_systeme+chiffre;
-                fin+=".jpg";
-                fichier<<i<<" "<<m_vertices[i].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
+                x=m_vertices[i->first].m_interface->m_top_box.get_posx()+2;
+                y=m_vertices[i->first].m_interface->m_top_box.get_posy()+2;
+                chiffre=std::to_string(i->first+1);
+                fin=m_nom_so[i->first];
+                //  if(!(m_vertices[i->first].m_value!=0)&&(x!=0)&&(y!=0))
+                //{
+                fichier<<i->first<<" "<<m_vertices[i->first].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
+                //}
             }
+
+
+
         }
 
         //fin=nom_systeme;
@@ -384,6 +411,7 @@ void Graph::Sauvegarde_totale(std::string nom_systeme)
         fichier<<j<<" "<<m_edges[j].m_to<<" "<<m_edges[j].m_from<<" "<<m_edges[j].m_weight<<std::endl;
     }
     std::cout<<" dans save"<<std::endl;
+    fichier.close();
 
 }
 
@@ -459,7 +487,8 @@ void Graph::test_remove_edge(int eidx)
 
     /// mais malheureusement ceci n'enlevait pas automatiquement l'interface top_edge en tant que child de main_box !
 
-    m_edges.erase( eidx );
+
+    m_edges.erase( m_edges.find(eidx) );
 
 
 
@@ -503,54 +532,69 @@ void Graph::test_remove_sommet(std::string nom_systeme, Graph g)
         std::cout<<"resaisir svp entre 0 et "<<(nombre_de_sommet-1)<<" !"<<std::endl;
         std::cin>>sommet_choisi;
     }
-    std::ofstream f(tuvasmarcher, std::ios::trunc);
-    f<<nombre_de_sommet<<std::endl;
-    std::cout<<" c'est bon!"<<std::endl;
-    for(int i =0; i<nombre_de_sommet; i++)
-    {
-        if((i!=sommet_choisi)&&(i<sommet_choisi))
-        {
-            std::cout<<"OK1"<<std::endl;
-            x=m_vertices[i].m_interface->m_top_box.get_posx()+2;
-            y=m_vertices[i].m_interface->m_top_box.get_posy()+2;
-            chiffre=std::to_string(i+1);
-            fin=nom_systeme+chiffre;
-            fin+=".jpg";
-            f<<i<<" "<<m_vertices[i].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
-            fin=nom_systeme;
-        }
-        if((i!=sommet_choisi)&&(i>sommet_choisi))
-        {
-            std::cout<<"OK2"<<std::endl;
-            x=m_vertices[i].m_interface->m_top_box.get_posx()+2;
-            y=m_vertices[i].m_interface->m_top_box.get_posy()+2;
-            chiffre=std::to_string(i);
-            fin=nom_systeme+chiffre;
-            fin+=".jpg";
-            f<<i-1<<" "<<m_vertices[i].m_value<<" "<<x<<" "<<y<<" "<<fin<<std::endl;
-            fin=nom_systeme;
-        }
-    }
-    f<<m_edges.size()<<std::endl;
-    int fichier_taille=m_edges.size();
-    for(int j=0; j<fichier_taille; j++)
-    {
 
-        f<<j<<" "<<m_edges[j].m_to<<" "<<m_edges[j].m_from<<" "<<m_edges[j].m_weight<<std::endl;
-    }
-    f.close();
-    Savegarde_sommets_aretes( nom_systeme);
-    g.update();
-    std::cout<<" c'est bon!"<<std::endl;
+    Vertex &remed=m_vertices.at(sommet_choisi);
+    std::vector<int> yessai;
+    std::map<int, Edge>::iterator it;
+    if (m_interface && remed.m_interface)
+    {
+        m_interface->m_main_box.remove_child(remed.m_interface->m_top_box);
+        m_vertices.erase(sommet_choisi);
 
+        if(remed.m_in.empty() == false || remed.m_out.empty() == false)
+        {
+            for(auto it=m_edges.begin(); it!=m_edges.end(); ++it)
+            {
+                if((it->second.m_from == sommet_choisi) || (it->second.m_to ==sommet_choisi))
+                {
+                    Edge &remed=m_edges.at(it->first);
+                    m_interface->m_main_box.remove_child( remed.m_interface->m_top_edge );
+                    yessai.push_back(it->first);
+
+                }
+
+            }
+            for (auto j : yessai)
+            {
+                it= m_edges.find(j);
+                m_edges.erase(it);
+            }
+        }
+
+        /*
+        //test_remove_edge( sommet_choisi);
+        //for( auto it= m_vertices[sommet_choisi].m_in.begin();it!= m_vertices[sommet_choisi].m_in.end();it++)
+        std::map<int, Edge>::iterator it;
+        //for(int p=m_vertices[sommet_choisi].m_in.begin(); p!=m_vertices[sommet_choisi].m_in.end(); p++ )
+        for(auto p : m_vertices[sommet_choisi].m_in)
+        {
+            it=m_edges.find(p);
+            m_edges.erase(it);
+        }
+        for(auto p : m_vertices[sommet_choisi].m_in)
+        {
+            it=m_edges.find(p);
+            m_edges.erase(it);
+        }
+        m_vertices[sommet_choisi].m_in.erase(m_vertices[sommet_choisi].m_in.begin(), m_vertices[sommet_choisi].m_in.end());
+        m_vertices[sommet_choisi].m_out.erase(m_vertices[sommet_choisi].m_out.begin(), m_vertices[sommet_choisi].m_out.end());
+
+        std::cout<<m_edges[sommet_choisi].m_from<<" "<<m_edges[sommet_choisi].m_to<<" "<<m_edges[sommet_choisi].m_weight<<std::endl;
+
+        m_vertices.erase(sommet_choisi);*/
+
+        Savegarde_sommets_aretes(nom_systeme);
+        g.update();
+        std::cout<<" c'est bon!"<<std::endl;
+    }
 }
-
 void Graph::ajout_arete(std::string nom_systeme, Graph g)
 {
     int nombre_de_sommet, indice;
     int sommet_depart, sommet_arrive, poid;
 
     ///J'ouvre mon fichier en mode lecture
+    std::map<int, Edge >::iterator it;
     std::string tuvasmarcher="texte/";
     tuvasmarcher+=nom_systeme;
     tuvasmarcher+=".txt";
@@ -583,10 +627,20 @@ void Graph::ajout_arete(std::string nom_systeme, Graph g)
     std::cout<<"Quel poid voulez vous donner à cette arete ? "<<std::endl;
     std::cin>>poid;
 
-    indice = nombre_de_sommet-1;
+    indice = -1;
+    do
+    {
+        indice++;
+        it=m_edges.find(indice);
+
+    }
+    while(it!=m_edges.end());
+
 
     std::cout<<" c'est bon!"<<std::endl;
+    std::cout<<indice<<std::endl;
     add_interfaced_edge(indice, sommet_depart, sommet_arrive, poid);
+
     Savegarde_sommets_aretes(nom_systeme);
     g.update();
 
@@ -632,11 +686,26 @@ void Graph::ajout_sommet(std::string nom_systeme,Graph g)
     std::cin>>x;
     std::cout<<"quel est son ordonne ?"<<std::endl;
     std::cin>>y;
-    m_so_asupp.push_back(nombre_de_sommet);
-    add_interfaced_vertex(nombre_de_sommet,poid,x,y,nom_photo);
+    std::map<int, Vertex>::iterator it;
+    int indi =-1;
+    do
+    {
+        indi++;
+        it=m_vertices.find(indi);
+
+    }
+    while(it!=m_vertices.end());
+
+    m_so_asupp[indi]="systemep0";
+    std::cout<<indi<<std::endl;
+
+    add_interfaced_vertex(indi,poid,x,y,nom_photo);
     Savegarde_sommets_aretes(nom_systeme);
     g.update();
 
 
 
 }
+
+
+

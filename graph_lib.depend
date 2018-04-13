@@ -44,7 +44,7 @@
 	<iostream>
 	"graph.h"
 
-1523271058 c:\users\arthur\desktop\informatique\projet_s2_ing2\graph_lib_exemple_graph\graph.h
+1523282920 c:\users\arthur\desktop\informatique\projet_s2_ing2\graph_lib_exemple_graph\graph.h
 	<fstream>
 	<string>
 	<vector>
@@ -53,9 +53,11 @@
 	<memory>
 	"grman/grman.h"
 
-1523270198 source:c:\users\arthur\desktop\informatique\projet_s2_ing2\graph_lib_exemple_graph\graph.cpp
+1523298515 source:c:\users\arthur\desktop\informatique\projet_s2_ing2\graph_lib_exemple_graph\graph.cpp
 	"graph.h"
 	<fstream>
 	<iostream>
 	<string>
+	<stdlib.h>
+	<map>
 
