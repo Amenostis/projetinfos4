@@ -13,6 +13,7 @@
 #include "grman_couleurs.h"
 #include "coords.h"
 
+
 namespace grman
 {
 

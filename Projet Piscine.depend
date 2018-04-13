@@ -1,0 +1,141 @@
+# depslib dependency file v1.0
+1522575069 source:c:\users\manol\desktop\graph_lib_exemple_graph\grman\coords.cpp
+	"coords.h"
+
+1522575424 c:\users\manol\desktop\graph_lib_exemple_graph\grman\coords.h
+	<cmath>
+
+1523100451 source:c:\users\manol\desktop\graph_lib_exemple_graph\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1523098910 c:\users\manol\desktop\graph_lib_exemple_graph\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1509222372 c:\users\manol\desktop\graph_lib_exemple_graph\grman\grman_couleurs.h
+
+1523099034 c:\users\manol\desktop\graph_lib_exemple_graph\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1523113022 source:c:\users\manol\desktop\graph_lib_exemple_graph\grman\test_nv.cpp
+	"../graph.h"
+
+1523302542 c:\users\manol\desktop\graph_lib_exemple_graph\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	<stack>
+	"grman/grman.h"
+
+1523111219 source:c:\users\manol\desktop\graph_lib_exemple_graph\grman\widget.cpp
+	"widget.h"
+	"../graph.h"
+	"test_nv.h"
+
+1523269058 c:\users\manol\desktop\graph_lib_exemple_graph\grman\test_nv.h
+	"grman.h"
+	<iostream>
+	<stack>
+	"../graph.h"
+
+1523303400 source:c:\users\manol\desktop\graph_lib_exemple_graph\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+
+1523300224 source:c:\users\manol\desktop\graph_lib_exemple_graph\graph.cpp
+	"graph.h"
+	<iostream>
+	<string>
+	<fstream>
+
+1522575069 source:c:\users\manol\desktop\piscine\grman\coords.cpp
+	"coords.h"
+
+1522575424 c:\users\manol\desktop\piscine\grman\coords.h
+	<cmath>
+
+1523100451 source:c:\users\manol\desktop\piscine\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1523098910 c:\users\manol\desktop\piscine\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1509222372 c:\users\manol\desktop\piscine\grman\grman_couleurs.h
+
+1523099034 c:\users\manol\desktop\piscine\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1523113022 source:c:\users\manol\desktop\piscine\grman\test_nv.cpp
+	"../graph.h"
+
+1523303848 c:\users\manol\desktop\piscine\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	<stack>
+	"grman/grman.h"
+
+1523111219 source:c:\users\manol\desktop\piscine\grman\widget.cpp
+	"widget.h"
+	"../graph.h"
+	"test_nv.h"
+
+1523269058 c:\users\manol\desktop\piscine\grman\test_nv.h
+	"grman.h"
+	<iostream>
+	<stack>
+	"../graph.h"
+
+1523303400 source:c:\users\manol\desktop\piscine\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+
+1523304819 source:c:\users\manol\desktop\piscine\graph.cpp
+	"graph.h"
+	<iostream>
+	<string>
+	<fstream>
+

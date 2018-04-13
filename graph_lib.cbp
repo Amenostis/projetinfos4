@@ -45,6 +45,8 @@
 		<Unit filename="grman/grman.cpp" />
 		<Unit filename="grman/grman.h" />
 		<Unit filename="grman/grman_couleurs.h" />
+		<Unit filename="grman/test_nv.cpp" />
+		<Unit filename="grman/test_nv.h" />
 		<Unit filename="grman/widget.cpp" />
 		<Unit filename="grman/widget.h" />
 		<Unit filename="main.cpp" />

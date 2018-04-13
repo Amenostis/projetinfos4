@@ -1,9 +1,6 @@
 #ifndef GRAPH_H_INCLUDED
 #define GRAPH_H_INCLUDED
 
-#include<fstream>
-#include<string>
-
 /**************************************************************
     Ici sont proposées 3 classes fondamentales
             Vertex (=Sommet)
@@ -78,7 +75,7 @@
 #include <map>
 #include <string>
 #include <memory>
-
+#include <stack>
 #include "grman/grman.h"
 
 /***************************************************
@@ -117,11 +114,20 @@ class VertexInterface
         // Une boite pour le label précédent
         grman::WidgetText m_box_label_idx;
 
+        int m_idx;
+        std::string m_Thing;
+
     public :
 
         // Le constructeur met en place les éléments de l'interface
         // voir l'implémentation dans le .cpp
+
         VertexInterface(int idx, int x, int y, std::string pic_name="", int pic_idx=0);
+        int getidx();
+    std::string getThing()
+    {
+        return m_Thing;
+    }
 };
 
 
@@ -150,6 +156,11 @@ class Vertex
         // Docu shared_ptr : https://msdn.microsoft.com/fr-fr/library/hh279669.aspx
         // La ligne précédente est en gros équivalent à la ligne suivante :
         // VertexInterface * m_interface = nullptr;
+        /// ICI les variables permettant le fonctionnement de l'algo de simulation
+        int m_N_dep; /// Nombre d'individus à t de départ
+        int m_N_ar; /// Nombre d'individus à t+1, à l'arrivée
+        int m_K; /// Capacité de portage de la population (Coef)
+        float m_ryth; /// Rythme de croissance (coef)
 
 
     public:
@@ -163,7 +174,13 @@ class Vertex
         /// le pre_update et post_update de Vertex (pas directement la boucle de jeu)
         /// Voir l'implémentation Graph::update dans le .cpp
         void pre_update();
-        void post_update();
+        void post_update(); /// a remplir dans le scope (int * x, int *y, bool *z)
+                            /// double getvalue()
+                            ///    {
+                            ///        return m_value
+
+                            ///    }
+
 };
 
 
@@ -178,6 +195,7 @@ class EdgeInterface
     // directement aux attributs (y compris privés)
     friend class Edge;
     friend class Graph;
+    //friend class Vertex;
 
     private :
 
@@ -225,6 +243,8 @@ class Edge
         /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
         std::shared_ptr<EdgeInterface> m_interface = nullptr;
 
+        /// Coeff pour simulation evol.pop
+        int m_coeff;
 
     public:
 
@@ -266,6 +286,40 @@ class GraphInterface
         /// Dans cette boite seront ajoutés des boutons de contrôle etc...
         grman::WidgetBox m_tool_box;
 
+        grman::WidgetButton m_boutonEsc;
+        grman::WidgetImage m_Esc;
+        grman::WidgetImage texte1;
+
+        grman::WidgetButton m_boutonRemove;
+        grman::WidgetImage m_Remove;
+        grman::WidgetImage texte3;
+
+        grman::WidgetButton m_boutonAdd;
+        grman::WidgetImage m_Add;
+        grman::WidgetImage texte2;
+
+        grman::WidgetButton m_boutonSave;
+        grman::WidgetImage m_Save;
+        grman::WidgetImage texte4;
+
+        grman::WidgetButton m_boutonSimul;
+        grman::WidgetImage m_Simul;
+        grman::WidgetImage texte5;
+
+        grman::WidgetButton m_boutonConex;
+        grman::WidgetImage m_Conex;
+        grman::WidgetImage texte6;
+
+        grman::WidgetButton m_boutonRemoveSom;
+        grman::WidgetImage m_RemoveSom;
+        grman::WidgetImage texte7;
+
+        grman::WidgetButton m_boutonAddSom;
+        grman::WidgetImage m_AddSom;
+        grman::WidgetImage texte8;
+
+
+
 
         // A compléter éventuellement par des widgets de décoration ou
         // d'édition (boutons ajouter/enlever ...)
@@ -280,6 +334,7 @@ class GraphInterface
 
 class Graph
 {
+    friend class Thing;
     private :
 
         /// La "liste" des arêtes
@@ -290,13 +345,14 @@ class Graph
 
         /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
         std::shared_ptr<GraphInterface> m_interface = nullptr;
-
+        //C:\Users\manol\Desktop\PISCINE\graph.h
         /// Liste des sommets a ne pas sauvegarder
         std::map<int, std::string> m_so_asupp;
         ///Liste des sommets avec nom
         std::map<int, std::string> m_nom_so;
 
 
+        // int id_graph : pour sauvegarde et chargement
     public:
 
         /// Les constructeurs sont à compléter selon vos besoin...
@@ -307,28 +363,115 @@ class Graph
         void add_interfaced_vertex(int idx, double value, int x, int y, std::string pic_name="", int pic_idx=0 );
         void add_interfaced_edge(int idx, int vert1, int vert2, double weight=0);
 
+        std::map<int, Edge> Getm_edges();
+
+
+        double Getm_weight();
+
+
         /// Méthode spéciale qui construit un graphe arbitraire (démo)
         /// Voir implémentation dans le .cpp
         /// Cette méthode est à enlever et remplacer par un système
         /// de chargement de fichiers par exemple.
-        void make_example(Graph g);
+        void make_example();
+        void vider_tout_le_graph();
 
-        /// Chargement et Sauvegarde en fermeture de l'application des sommets et aretes
+
+
+        void evolution_pop();
+        void facteurRepro(int num_vertex_donne); /// Nom à changer + Nom indices
+        int calcul_K(int);
+        int predation(int);
+        void MAJarete();
+        void menu();
+
+        ///Fonctions de jeu
         void Charger_toutes_les_sommets_et_aretes(std::string nom_systeme);
-        void Savegarde_sommets_aretes(std::string nom_systeme);
+        void Sauvegarde_sommets_aretes(std::string nom_systeme);
         void Sauvegarde_totale(std::string nom_systeme);
-
-        ///Supression des aretes et sommets
         void test_remove_edge(int eidx);
         void test_remove_sommet(std::string nom_systeme, Graph g);
-
-        ///Ajout des aretes et des sommets
         void ajout_arete(std::string nom_systeme, Graph g);
-        void ajout_sommet(std::string nom_systeme,Graph g );
+        void ajout_sommet(std::string nom_systeme,Graph g);
+
+
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
-        void update();
+        int update(std::string nom_fichier, Graph g);
 };
+
+
+class Thing {
+
+    friend class Graph;
+    private :
+        /// Utiliser une top_box de type WidgetBox pour encapsuler
+        /// tous les éléments de l'interface associés à votre objet
+
+        grman::WidgetBox m_menu;
+        grman::WidgetImage m_fond;
+        grman::WidgetBox m_top_box;
+        grman::WidgetBox m_boite_boutons;
+
+        grman::WidgetButton m_bouton1;
+        grman::WidgetText m_bouton1_label;
+
+        grman::WidgetButton m_bouton2;
+        grman::WidgetText m_bouton2_label;
+
+        grman::WidgetButton m_bouton3;
+        grman::WidgetText m_bouton3_label;
+
+        grman::WidgetButton m_boutonRegles;
+        grman::WidgetText m_boutonRegles_label;
+
+        grman::WidgetButton m_boutonQuitter;
+        grman::WidgetImage m_Quitter;
+
+
+
+        /// Les Widgets qui constitueront l'interface de l'objet
+        grman::WidgetImage m_img;            // Sera l'arbre à droite
+        grman::WidgetImage m_img_anime;      // Sera le clown marcheur au milieu
+        grman::WidgetCheckBox m_marche;      // Sera la boite à cocher en bas à gauche (faire marcher le clown)
+        grman::WidgetText m_legende;         // Sera le texte "CLICK ME" en bas
+
+        grman::WidgetBox m_boite_regles;     // Sera la boite à sliders en haut à gauche
+        grman::WidgetVSlider m_regle_reel;   // Sera le slider de gauche (ordonnée du clow)
+        grman::WidgetVSlider m_regle_entier; // Sera le slider de droite ( vitesse marche clown)
+
+        /*grman::WidgetBox m_boite_boutons;    // Sera la boite à boutons en haut à droite
+        grman::WidgetButton m_bouton1;       // Sera le bouton avec le texte NEW
+        grman::WidgetText m_bouton1_label;   // Le texte NEW
+        grman::WidgetButton m_bouton2;       // Sera le bouton avec l'image de clown méchant
+        grman::WidgetImage m_bouton2_image;  // L'image de clown méchant
+        grman::WidgetText m_dragme; */         // Le message "DRAG ME" à droite des 2 boutons
+
+        grman::WidgetEdge m_lien1;           // Sera un lien non orienté entre l'arbre et le clown
+        grman::WidgetEdge m_lien2;           // Sera un lien orienté entre la boite à boutons et le clown
+        grman::WidgetText m_lien2_label;     // Sera un label sur le lien précédent
+        grman::WidgetEdge m_lien3;           // Sera un lien orienté entre la check box et le clown
+
+        std::stack<grman::WidgetImage *> m_dynaclowns;    // Expérimental : les clowns ajoutés/enlevés avec les boutons
+
+    public :
+
+        /// Le constructeur de la classe (pas forcément par défaut !)
+        /// initialise les données des widgets, place la hiérarchie des sous-cadres etc...
+        Thing();
+        void Charger_toutes_les_sommets_et_aretes(std::string nom_systeme);
+        void Savegarde_sommets_aretes(std::string nom_systeme);
+        void test_remove_edge(int eidx);
+        //void evolution_pop();
+        int update(Graph& graph,std::string& nom_fichier);
+        //void menu();
+
+        /// On a des allocations dynamiques dans m_dynaclowns => à nettoyer dans le destructeur
+        ~Thing();
+
+};
+
+
 
 
 #endif // GRAPH_H_INCLUDED

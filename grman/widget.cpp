@@ -1,5 +1,6 @@
 #include "widget.h"
-
+#include "../graph.h"
+#include "test_nv.h"
 
 namespace grman
 {
@@ -8,6 +9,8 @@ void rect_around(BITMAP *bmp, int color, int thickness=1, int receding=0)
 {
     for (int i=0+receding; i<thickness+receding; ++i)
         rect(bmp, i, i, bmp->w-1-i, bmp->h-1-i, color);
+
+
 }
 
 
@@ -359,7 +362,22 @@ void WidgetEdge::draw()
     p[1] = m_attach[1]->get_abs_frame().intersect(-vec_dir);
 
     // Dessin du lien cadre à cadre
+/*int x;
+    x=Graph::Getm_edges().Getm_weight;
+    if(x<10)
+    {
+        thick_line(page, p[0].x, p[0].y, p[1].x, p[1].y, 2, m_color);
+
+    }
+    if(x=10;x<20)
+    {
+        thick_line(page, p[0].x, p[0].y, p[1].x, p[1].y, 4, m_color);
+
+    }
+*/
+
     thick_line(page, p[0].x, p[0].y, p[1].x, p[1].y, m_thickness, m_color);
+
 
     // Calcul du nouveau vecteur cadre à cadre
     vec_dir = p[1] - p[0];
