@@ -525,19 +525,19 @@ Thing::Thing()
     m_bouton1.set_frame(100,300,150,50);
     m_bouton1.set_bg_color(BLANC);
     m_bouton1.add_child(m_bouton1_label);
-    m_bouton1_label.set_message("Systeme Premier");
+    m_bouton1_label.set_message("Plateforme 1");
 
     m_menu.add_child( m_bouton2 );
     m_bouton2.set_frame(350,300,150,50);
     m_bouton2.set_bg_color(BLANC);
     m_bouton2.add_child(m_bouton2_label);
-    m_bouton2_label.set_message("Systeme Second");
+    m_bouton2_label.set_message("Plateforme 2");
 
     m_menu.add_child( m_bouton3 );
     m_bouton3.set_frame(600,300,150,50);
     m_bouton3.set_bg_color(BLANC);
     m_bouton3.add_child(m_bouton3_label);
-    m_bouton3_label.set_message("Systeme Chelou");
+    m_bouton3_label.set_message("Plateforme 3");
 
     m_menu.add_child( m_boutonRegles );
     m_boutonRegles.set_frame(300,450,250,50);
@@ -1356,9 +1356,162 @@ void Graph::ajout_sommet(std::string nom_systeme,Graph g)
     add_interfaced_vertex(indi,poid,x,y,nom_photo);
     Sauvegarde_sommets_aretes(nom_systeme);
     //g.update();
-
-
-
 }
 
+void Graph::matrice_adj() //complete la matrice adjacence
+ {
+     adj.resize( m_vertices.size(), std::vector<int>( m_vertices.size(), 0 ) );
+     for ( auto &elem : m_edges ) {
+         adj[elem.second.m_from][elem.second.m_to] = 1;
+     }
+     for ( unsigned int i = 0; i < m_vertices.size(); i++ ) {
+         for ( unsigned int j = 0; j < m_vertices.size(); j++ ) {
+             std::cout << adj[i][j] << " ";
+         }
+         std::cout << std::endl;
+     }
+ }
 
+std::vector<std::vector<int>> Graph::algo_de_toute_les_composantes_connexes()
+{
+    matrice_adj();//reactualise la matrice d'adjacence
+    std::vector<std::vector<int>> tab_cfc; // tab des composantes fortements connexes
+    std::vector<int> marquage;           // tab de marquages
+    int a, b;                           // sommets intermediaires
+    ///allocation memoire de tab_cfc et marques
+    tab_cfc.resize( m_vertices.size() ); //alloue la place disponible que donne la liste de sommets
+    for ( int i = 0; i < m_vertices.size(); i++ )
+    {
+        tab_cfc.at( i ).resize( m_vertices.size() );//complète les y
+    }
+    marquage.resize( m_vertices.size() );//alloue de la place pour le tableau de marquage
+
+    for ( int i = 0; i < m_vertices.size(); i++ ) // initialise les deux tableau à 0
+    {
+        marquage.at( i ) = 0;
+        for ( int j = 0; j < m_vertices.size(); j++ )
+        {
+            tab_cfc.at( i ).at( j ) = 0;
+        }
+    }
+    int k = 0;
+    for ( a = 0; a < m_vertices.size(); a++ )
+    {
+        if ( !marquage[a] )//si different de la valeur actuelle présente dans le tableau de marquage
+        {
+            tab_cfc[a] = trouver_une_composante_connexe(a);
+            marquage[a] = 1;
+        }
+    }
+    std::cout << "K :" << k;
+    std::ofstream fic(
+        "test.txt", std::ios::out | std::ios::trunc ); // droit d ecriture
+    // avec effacement du
+    // fichier ouvert
+    if ( fic )
+    {
+        for ( int m = 0; m < m_vertices.size(); m++ )
+        {
+            for ( int n = 0; n < m_vertices.size(); n++ )
+            {
+                fic<< tab_cfc.at( m ).at( n ) << " ";
+            }
+            fic << std::endl;
+        }
+        fic.close();
+    }
+    else
+        std::cerr << "Erreur d'ouverture du fichier !" << std::endl;
+    return tab_cfc ;
+}
+
+std::vector<int> Graph::trouver_une_composante_connexe(int S)
+{
+    std::vector<int> c1, c, c2, marquage;
+    int a, b;
+    int add = 1;
+    // allocation memoire
+    c1.resize( m_vertices.size() );
+    c2.resize( m_vertices.size() );
+    c.resize( m_vertices.size() );
+    marquage.resize( m_vertices.size() );
+    // init valeur a 0
+    for ( int i = 0; i < m_vertices.size(); i++ )
+    {
+        c1.at( i ) = 0;
+        c2.at( i ) = 0;
+        c.at( i ) = 0;
+        marquage.at( i ) = 0;
+    }
+    // on rend le sommet s connexe
+    c1[S] = 1;
+    c2[S] = 1;
+    // recherche des composantes connexes partant de s a ajouter a c1
+    while ( add )
+    {
+        add = 0;
+        for ( a = 0; a < m_vertices.size(); a++ )
+        {
+            if ( !marquage[a] && c1[a] )//si c'est pas marqué
+            {
+                marquage[a] = 1;//marquage
+                for ( b = 0; b < m_vertices.size(); b++ )
+                {
+                    // std::cout <<" val :"<<adjacence.at(x).at(y);
+                    if ( adj[a][b] && !marquage[b] )   // ERROR HERE
+                    {
+                        c1[b] = 1;
+                        add = 1;
+                    }
+                }
+            }
+        }
+    }
+    for ( int i = 0; i < m_vertices.size(); i++ )
+    {
+        marquage.at( i ) = 0;
+    }
+    add = 1;
+    std::vector<std::vector<int>> Tab_adj = intervertir();
+    // recherche des composantes connexes arrivant a S a ajouter dans c2
+    while ( add )
+    {
+        add = 0;
+        if ( !marquage[a] && c2[a] )
+        {
+            marquage[a] = 1;
+            for ( b = 0; b < m_vertices.size(); b++ )
+            {
+                // std::cout <<" val :"<<adjacence.at(x).at(y);
+                if ( adj[b][a] && !marquage[b] )   // ERROR HERE
+                {
+                    c2[b] = 1;
+                    add = 1;
+                }
+            }
+        }
+    }
+
+// composante fortement connexe c =intersection de c1 et c2
+    for ( int a = 0; a < m_vertices.size(); a++ )
+{
+    c[a] = c1[a] & c2[a];
+    //        std::cout << c1[x] << " " ;
+}
+//    std::cout << std::endl;
+return c;
+}
+
+std::vector<std::vector<int>> Graph::intervertir() //interverti la matrice et la renvoie
+{
+     std::vector<std::vector<int>> tab;
+     tab.resize( m_vertices.size(),
+               std::vector<int>( m_vertices.size(), 0 ) ); // resize double vector
+     for ( int i = 0; i < m_vertices.size(); i++ ) {
+         for ( int j = 0; j < m_vertices.size(); j++ ) {
+             tab[i][j] = adj[j][i]; // on inverse
+         }
+
+     }
+     return tab;
+ }

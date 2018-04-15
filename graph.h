@@ -350,6 +350,8 @@ class Graph
         std::map<int, std::string> m_so_asupp;
         ///Liste des sommets avec nom
         std::map<int, std::string> m_nom_so;
+        ///Matrice d'adjacence
+        std::vector<std::vector<int>> adj;
 
 
         // int id_graph : pour sauvegarde et chargement
@@ -398,6 +400,14 @@ class Graph
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
         int update(std::string nom_fichier, Graph g);
+
+        ///Fonction de connexité
+        void matrice_adj();
+        std::vector<std::vector<int>> algo_de_toute_les_composantes_connexes();
+        std::vector<int> trouver_une_composante_connexe(int S);
+        std::vector<std::vector<int>> intervertir();
+
+
 };
 
 

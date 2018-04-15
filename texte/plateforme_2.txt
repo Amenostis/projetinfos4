@@ -1,0 +1,15 @@
+7
+1 100 100 100 Feuilles.jpg
+2 100 100 200 Glands.jpg
+3 80 200 100 Chenille.jpg
+4 70 200 200 Campagnol.jpg
+5 50 300 100 Mesange.jpg
+6 20 400 100 Martre.jpg
+7 10 400 200 Renard.jpg
+6
+1 1 3 50
+2 2 4 40
+3 3 5 70
+4 4 6 80
+5 4 7 15
+6 5 6 40

@@ -12,6 +12,20 @@ int main()
 
     /// Un exemple de graphe
     Graph g;
+    ///Main pour algorithme de forte connexite (casi-complet)
+   /* Graph g;//crere Graph et vect de vect
+    std::vector<std::vector<int>>tab;
+    g.Charger_toutes_les_sommets_et_aretes("plateforme_1");// charge le fichier
+    tab=g.algo_de_toute_les_composantes_connexes();//  vecteur de vect= nom.fct
+    for ( unsigned int i = 0; i < tab.size(); i++ )// puis i j : conex numero i, indice de
+    {
+        std::cout << "composante connexe numero" <<i<< ":" << std::endl;
+        for ( unsigned int j = 0; j < tab[i].size(); j++ )
+        {
+            std::cout << "composante : "<<tab[i][j];
+        }
+        std::cout << std::endl;
+    }*/
     Thing menu;
 
     int choix=0;
